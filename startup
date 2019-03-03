@@ -1,0 +1,13 @@
+#!/usr/bin/fish
+set -l desktop_home (if set -q XDG_CONFIG_HOME; echo $XDG_CONFIG_HOME; else; echo $HOME/.config; end)/i3
+
+compton -b
+dunst & disown
+redshift & disown
+nm-applet & disown
+blueman-applet & disown
+if test -f $desktop_home/wallpaper
+    feh --bg-scale .config/i3/wallpaper
+ $desktop_home/wallpaper
+end    
+

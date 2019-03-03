@@ -1,0 +1,147 @@
+# i3 config file (v4)é
+
+### Environment Startup
+exec --no-startup-id		sh -c "${XDG_CONFIG_HOME:-$HOME/.config}/i3/startup"
+
+### Default Programs
+set $terminal			alacritty
+set $floating_terminal		alacritty -t 'Floating Alacritty'
+set $browser			firefox
+set $menu_options		-fn 'Fira Code:size=10' -dim 0.5 -nb '#282828' -nf '#EBDBB2' -sb '#282828' -sf '#689D6A' 
+set $menu			dmenu-pretty $menu_options
+set $lock			i3lock-fancy -t ''
+
+### Layers
+set $layer1			Mod4
+set $layer2			Mod4+Shift
+set $layer3			Mod4+Control
+
+### Style
+font				pango:Fira Code 11
+gaps inner			16
+new_float			none
+new_window			none
+workspace_layout		tabbed
+
+### Colors
+client.focused			#689D6A	#689D6A	#EBDBB2	#8EC07C	#689D6A
+client.focused_inactive		#282828	#282828	#EBDBB2	#928374	#282828
+client.unfocused		#282828	#282828	#EBDBB2	#928374	#282828
+client.urgent			#CC241D	#CC241D	#EBDBB2	#FB4934	#CC241D
+client.placeholder		#282828	#282828	#EBDBB2	#928374	#282828
+client.background		#282828
+
+### Keybindings
+floating_modifier		$layer1
+
+### Keybindings / Execution
+bindsym  $layer1+Escape		exec --no-startup-id $lock
+bindsym  $layer1+Return		exec --no-startup-id $terminal
+bindsym  $layer2+Return		exec --no-startup-id $floating_terminal
+bindsym  $layer2+BackSpace	kill
+
+bindsym  XF86AudioRaiseVolume	exec --no-startup-id pamixer -i 5
+bindsym  XF86AudioMute		exec --no-startup-id pamixer -t
+bindsym  XF86AudioMicMute	exec --no-startup-id pamixer --default-source -t
+bindsym  XF86AudioLowerVolume	exec --no-startup-id pamixer -d 5
+bindsym  XF86MonBrightnessUp	exec --no-startup-id xbacklight + 5
+bindsym  XF86MonBrightnessDown	exec --no-startup-id xbacklight - 5
+bindsym  XF86Search		exec --no-startup-id $browser https://ddg.gg/
+
+bindcode $layer1+29		exec --no-startup-id fish -c "eval (dmenu-pretty-run $menu_options -p ' Run ')"
+
+### Keybindings / Workspaces
+bindcode $layer1+38		workspace 0
+bindcode $layer2+38		move container to workspace 0
+bindcode $layer3+38		rename workspace to 0
+
+bindcode $layer1+39		workspace 1
+bindcode $layer2+39		move container to workspace 1
+bindcode $layer3+39		rename workspace to 1
+
+bindcode $layer1+40		workspace 2
+bindcode $layer2+40		move container to workspace 2
+bindcode $layer3+40		rename workspace to 2
+
+bindcode $layer1+41		workspace 3
+bindcode $layer2+41		move container to workspace 3
+bindcode $layer3+41		rename workspace to 3
+
+bindcode $layer1+42		workspace 4
+bindcode $layer2+42		move container to workspace 4
+bindcode $layer3+42		rename workspace to 4
+
+bindcode $layer1+24		workspace 5
+bindcode $layer2+24		move container to workspace 5
+bindcode $layer3+24		rename workspace to 5
+
+bindcode $layer1+25		workspace 6
+bindcode $layer2+25		move container to workspace 6
+bindcode $layer3+25		rename workspace to 6
+
+bindcode $layer1+26		workspace 7
+bindcode $layer2+26		move container to workspace 7
+bindcode $layer3+26		rename workspace to 7
+
+bindcode $layer1+27		workspace 8
+bindcode $layer2+27		move container to workspace 8
+bindcode $layer3+27		rename workspace to 8
+
+bindcode $layer1+28		workspace 9
+bindcode $layer2+28		move container to workspace 9
+bindcode $layer3+28		rename workspace to 9
+
+bindcode $layer1+43		exec --no-startup-id fish -c "i3 workspace ($menu -noinput -p ' Workspace ')"
+bindcode $layer2+43		exec --no-startup-id fish -c "i3 move container workspace ($menu -noinput -p ' Move to Workspace ')"
+bindcode $layer3+43		exec --no-startup-id fish -c "i3 rename workspace to ($menu -noinput -p ' Rename Workspace ')"
+
+### Keybindings / Motion
+bindcode $layer1+44		focus left
+bindcode $layer2+44		move left
+bindcode $layer3+44		resize shrink width 10 px or 10 ppt
+
+bindcode $layer1+45		focus down
+bindcode $layer2+45		move down
+bindcode $layer3+45		resize shrink height 10 px or 10 ppt
+
+bindcode $layer1+46		focus up
+bindcode $layer2+46		move up
+bindcode $layer3+46		resize grow height 10 px or 10 ppt
+
+bindcode $layer1+47		focus right
+bindcode $layer2+47		move right
+bindcode $layer3+47		resize grow width 10 px or 10 ppt
+
+bindcode $layer3+32		focus parent
+bindcode $layer3+33		focus child
+
+### Keybindings / Layout
+bindcode $layer1+30		scratchpad show
+bindcode $layer2+30		move scratchpad
+
+bindcode $layer1+31		focus mode_toggle
+bindcode $layer2+31		floating toggle
+bindcode $layer3+31		sticky toggle
+
+bindcode $layer1+32		layout toggle splitv splith tabbed
+bindcode $layer2+32		split h
+bindcode $layer1+33		fullscreen toggle
+bindcode $layer2+33		split v
+
+##################################
+# Start i3bar to display a workspace bar (plus the system information i3status
+# finds out, if available)
+bar {
+    position bottom
+        status_command i3status -c /home/arieuse/.config/i3/i3stat
+	colors {
+	background #2f343f
+	focused_workspace #2f343e #2d343e #fffff
+	inactive_workspace #2d343f #2f343f #11111
+	}
+}
+
+#window no border no titlebar
+
+new_window 1pixel
+for_window [class="^.*"] border pixel 0
